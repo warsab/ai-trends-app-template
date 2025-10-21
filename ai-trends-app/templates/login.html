@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Smart Trendz Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #0a1f1a 0%, #0d2d27 50%, #1a2820 100%);
+            min-height: 100vh;
+        }
+
+        /* Glass morphism for login card */
+        .glass-card {
+            background: rgba(10, 31, 26, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            box-shadow: 
+                0 0 40px rgba(16, 185, 129, 0.2),
+                inset 0 0 20px rgba(16, 185, 129, 0.05);
+        }
+
+        /* Neon input fields */
+        .neon-input {
+            background: rgba(10, 31, 26, 0.8);
+            border: 2px solid rgba(16, 185, 129, 0.3);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .neon-input:focus {
+            outline: none;
+            border-color: #10b981;
+            box-shadow: 
+                0 0 20px rgba(16, 185, 129, 0.4),
+                inset 0 0 10px rgba(16, 185, 129, 0.1);
+            background: rgba(10, 31, 26, 0.9);
+        }
+
+        .neon-input::placeholder {
+            color: rgba(16, 185, 129, 0.5);
+        }
+
+        /* Neon button */
+        .neon-login-button {
+            background: rgba(16, 185, 129, 0.2);
+            border: 2px solid #10b981;
+            color: #d1fae5;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .neon-login-button:hover {
+            background: rgba(16, 185, 129, 0.3);
+            box-shadow: 
+                0 0 30px rgba(16, 185, 129, 0.6),
+                0 0 50px rgba(16, 185, 129, 0.3),
+                inset 0 0 20px rgba(16, 185, 129, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .neon-login-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .neon-login-button:hover::before {
+            left: 100%;
+        }
+
+        /* Logo glow effect */
+        .logo-glow {
+            box-shadow: 
+                0 0 30px rgba(16, 185, 129, 0.5),
+                0 0 50px rgba(16, 185, 129, 0.3);
+        }
+
+        /* Floating particles */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .floating-particle {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* Pulse animation for error */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .pulse-animation {
+            animation: pulse 1s ease-in-out;
+        }
+
+        /* Icon glow in input */
+        .input-icon {
+            color: rgba(16, 185, 129, 0.6);
+            transition: all 0.3s ease;
+        }
+
+        .neon-input:focus ~ .input-icon {
+            color: #10b981;
+            text-shadow: 0 0 10px rgba(16, 185, 129, 0.8);
+        }
+    </style>
+</head>
+<body class="h-full">
+    <!-- Floating particles for atmosphere -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none opacity-20">
+        <div class="absolute top-20 left-10 w-2 h-2 bg-emerald-500 rounded-full floating-particle"></div>
+        <div class="absolute top-40 right-20 w-3 h-3 bg-teal-500 rounded-full floating-particle" style="animation-delay: 1s;"></div>
+        <div class="absolute bottom-32 left-1/4 w-2 h-2 bg-green-500 rounded-full floating-particle" style="animation-delay: 2s;"></div>
+        <div class="absolute top-1/3 right-1/3 w-2 h-2 bg-emerald-400 rounded-full floating-particle" style="animation-delay: 3s;"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-3 h-3 bg-teal-400 rounded-full floating-particle" style="animation-delay: 4s;"></div>
+    </div>
+
+    <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="max-w-md w-full space-y-8">
+            <!-- Logo and Header -->
+            <div class="text-center">
+                <div class="mx-auto mb-6">
+                    <img src="{{ url_for('static', filename='images/avatars/logodashboard.png') }}" 
+                         alt="Logo" 
+                         class="h-32 w-auto mx-auto logo-glow"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="h-20 w-20 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-2xl mx-auto items-center justify-center shadow-lg hidden logo-glow">
+                        <i class="fas fa-dove text-3xl text-white"></i>
+                    </div>
+                </div>
+                <h2 class="text-4xl font-extrabold text-white mb-2" style="text-shadow: 0 0 20px rgba(16, 185, 129, 0.5);">
+                    Smart Trendz
+                </h2>
+                <p class="text-lg text-emerald-300">
+                    AI-Powered Insights Dashboard
+                </p>
+                <p class="mt-2 text-sm text-gray-400">
+                    Sign in to access your personalized AI news hub
+                </p>
+            </div>
+
+            <!-- Login Form -->
+            <form class="mt-8 space-y-6 glass-card p-8 rounded-2xl shadow-2xl" id="loginForm">
+                <div class="space-y-5">
+                    <div>
+                        <label for="username" class="block text-sm font-medium text-emerald-300 mb-2">
+                            <i class="fas fa-user mr-2"></i>Username
+                        </label>
+                        <div class="relative">
+                            <input id="username" 
+                                   name="username" 
+                                   type="text" 
+                                   required 
+                                   class="neon-input appearance-none relative block w-full px-4 py-3 pl-12 rounded-lg text-white placeholder-emerald-400/50" 
+                                   placeholder="Enter your username">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none input-icon">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-emerald-300 mb-2">
+                            <i class="fas fa-lock mr-2"></i>Password
+                        </label>
+                        <div class="relative">
+                            <input id="password" 
+                                   name="password" 
+                                   type="password" 
+                                   required 
+                                   class="neon-input appearance-none relative block w-full px-4 py-3 pl-12 rounded-lg text-white placeholder-emerald-400/50" 
+                                   placeholder="Enter your password">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none input-icon">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <button type="submit" 
+                            class="neon-login-button group relative w-full flex justify-center py-3 px-4 text-sm font-bold rounded-lg transition duration-300 shadow-lg">
+                        <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+                            <i class="fas fa-sign-in-alt text-emerald-300"></i>
+                        </span>
+                        Sign In
+                    </button>
+                </div>
+            </form>
+
+            <!-- Error Message -->
+            <div id="errorMessage" class="hidden mt-4 glass-card border-2 border-red-500/50 text-red-300 px-4 py-3 rounded-lg text-center pulse-animation">
+                <i class="fas fa-exclamation-circle mr-2"></i>
+                <span id="errorText">Invalid credentials</span>
+            </div>
+
+            <!-- Footer Info -->
+            <div class="text-center">
+                <p class="text-xs text-gray-500">
+                    <i class="fas fa-shield-alt mr-1"></i>
+                    Powered by "your company/brnad name"<br>
+                    Secured by advanced encryption
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center z-50">
+        <div class="glass-card p-8 rounded-2xl text-center shadow-2xl">
+            <div class="relative w-16 h-16 mx-auto mb-4">
+                <div class="absolute inset-0 border-4 border-emerald-500/30 rounded-full"></div>
+                <div class="absolute inset-0 border-4 border-transparent border-t-emerald-500 rounded-full animate-spin"></div>
+            </div>
+            <p class="text-emerald-300 font-medium">Authenticating...</p>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.getElementById('loginForm');
+            const errorMessage = document.getElementById('errorMessage');
+            const errorText = document.getElementById('errorText');
+            
+            loginForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                
+                errorMessage.classList.add('hidden');
+                document.getElementById('loadingSpinner').classList.remove('hidden');
+                
+                try {
+                    const response = await fetch('/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            username: username,
+                            password: password
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    document.getElementById('loadingSpinner').classList.add('hidden');
+                    
+                    if (data.success) {
+                        showToast('Login successful! Redirecting...', 'success');
+                        setTimeout(() => {
+                            window.location.href = '/dashboard';
+                        }, 1000);
+                    } else {
+                        showError(data.error || 'Invalid username or password');
+                    }
+                } catch (error) {
+                    document.getElementById('loadingSpinner').classList.add('hidden');
+                    showError('Login failed. Please try again.');
+                    console.error('Login error:', error);
+                }
+            });
+            
+            document.getElementById('password').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    loginForm.dispatchEvent(new Event('submit'));
+                }
+            });
+        });
+
+        /**
+        * Displays an error message to the user.
+        * @param {string} message - The error message to be displayed.
+        */
+        function showError(message) {
+            const errorMessage = document.getElementById('errorMessage');
+            const errorText = document.getElementById('errorText');
+            errorText.textContent = message;
+            errorMessage.classList.remove('hidden');
+            errorMessage.classList.add('pulse-animation');
+            setTimeout(() => {
+                errorMessage.classList.remove('pulse-animation');
+            }, 1000);
+        }
+
+        /**
+         * Displays a toast notification to the user.
+         * @param {string} message - The message to be displayed in the toast.
+         * @param {string} type - The type of the toast, can be one of 'success', 'error', 'warning', or 'info'. Default is 'info'.
+         */
+        function showToast(message, type = 'info') {
+            const toastContainer = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            
+            const colors = {
+                success: 'bg-green-500/80 border-green-400',
+                error: 'bg-red-500/80 border-red-400',
+                warning: 'bg-yellow-500/80 border-yellow-400',
+                info: 'bg-emerald-500/80 border-emerald-400'
+            };
+            
+            const icons = {
+                success: 'fa-check-circle',
+                error: 'fa-exclamation-circle',
+                warning: 'fa-exclamation-triangle',
+                info: 'fa-info-circle'
+            };
+            
+            toast.className = `${colors[type]} backdrop-blur-sm border-2 text-white px-6 py-4 rounded-lg shadow-2xl transform transition-all duration-300 translate-x-full`;
+            toast.innerHTML = `
+                <div class="flex items-center justify-between">
+                    <span><i class="fas ${icons[type]} mr-2"></i>${message}</span>
+                    <button onclick="this.parentElement.parentElement.remove()" class="ml-4 text-white hover:text-gray-200">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `;
+            
+            toastContainer.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.remove('translate-x-full');
+            }, 100);
+            
+            setTimeout(() => {
+                toast.classList.add('translate-x-full');
+                setTimeout(() => {
+                    if (toast.parentElement) {
+                        toast.remove();
+                    }
+                }, 300);
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
